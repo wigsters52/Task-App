@@ -1,10 +1,15 @@
 // CRUD create read update delete
 
-const mongodb = require('mongodb')
-const MongoClient = mongodb.MongoClient
+// const mongodb = require('mongodb')
+// const MongoClient = mongodb.MongoClient
+// const ObjectID = mongodb.ObjectID
+
+const { MongoClient, ObjectID} = require('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
+
+
 
 MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client) => {
     if(error) {
@@ -12,36 +17,25 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
     }
 
     const db = client.db(databaseName)
-    // db.collection('users').insertOne({
-    //     name: 'Ryan',
-    //     age: 30
-    // }, (error, result) => {
+    
+    // db.collection('users').findOne({name: 'Ryan', age: 30}, (error, user) => {
     //     if(error) {
-    //         return console.log('Unable to insert user')
+    //         return console.log('Unable to fetch')
     //     }
-
-    //     console.log(result.insertedCount)
+        
+    //     console.log(user)
     // })
 
-    db.collection('tasks').insertMany([
-        {
-            description: 'Ut luctus tortor risus, ut. ', 
-            completed: true
-        }, {
-            name: 'Sed luctus pretium massa, ac. ',
-            completed: true
-        }
-        , {
-            name: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit',
-            completed: false
-        }
-    ], (error, result) => {
+    db.collection('tasks').findOne({_id: new ObjectID('6058e2271bb84e1a7875d755')}, (error, task) => {
         if(error) {
-            return console.log('Unable to insert documents')
+            return console.log('Unable to fetch')
         }
-        console.log(result.ops)
+        
+        console.log(task)
     })
 
-
+    db.collection('tasks').find({ completed: true}).toArray((error, tasks) => {
+        console.log(tasks)
+    })
+    
 })
-
