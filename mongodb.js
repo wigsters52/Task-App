@@ -18,24 +18,14 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
 
     const db = client.db(databaseName)
     
-    // db.collection('users').findOne({name: 'Ryan', age: 30}, (error, user) => {
-    //     if(error) {
-    //         return console.log('Unable to fetch')
-    //     }
-        
-    //     console.log(user)
-    // })
-
-    db.collection('tasks').findOne({_id: new ObjectID('6058e2271bb84e1a7875d755')}, (error, task) => {
-        if(error) {
-            return console.log('Unable to fetch')
+    const updatePromise = db.collection('tasks').updateMany({ completed: true }, {
+        $set: {
+            completed: false
         }
-        
-        console.log(task)
     })
-
-    db.collection('tasks').find({ completed: true}).toArray((error, tasks) => {
-        console.log(tasks)
+    updatePromise.then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
-    
 })
