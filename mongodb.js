@@ -18,12 +18,7 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
 
     const db = client.db(databaseName)
     
-    const updatePromise = db.collection('tasks').updateMany({ completed: true }, {
-        $set: {
-            completed: false
-        }
-    })
-    updatePromise.then((result) => {
+    db.collection('tasks').deleteOne({ description: 'Ut luctus tortor risus, ut. ' }).then((result) => {
         console.log(result)
     }).catch((error) => {
         console.log(error)
