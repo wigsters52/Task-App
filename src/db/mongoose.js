@@ -9,10 +9,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
 const User = mongoose.model('User', {
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }, 
     age: {
         type: Number, 
+        default: 0,
         validate(value){
             if(value < 0) {
                 throw new Error('Age must be a positive number')
@@ -22,9 +24,20 @@ const User = mongoose.model('User', {
     email: {
         type: String, 
         required: true, 
+        trim: true, 
+        lowercase: true,
         validator(value){
             if(!validator.isEmail(value)){
                 throw new Error('Email is invalid')
+            }
+        }
+    },
+    password: {
+        type: String, 
+        minLength: 7,
+        validator(value){
+            if(!validator.lowercase.contains('password')){
+                throw new Error('Password is not allowed in your password')
             }
         }
     }
@@ -32,8 +45,10 @@ const User = mongoose.model('User', {
 })
 
 // const ryan = new User({
-//     name: 'Ryan',
-//     age: 30
+//     name: 'TedSam',
+//     age: 30,
+//     email: 'ryan@ryan.com',
+//     password: 'Buttfart'
 // })
 
 // ryan.save().then(() => {
@@ -44,15 +59,20 @@ const User = mongoose.model('User', {
 
 const Task = mongoose.model('Task', {
     description: {
-        type: String
+        type: String, 
+        required: true, 
+        trim: true
     }, 
     completed: {
-        type: Boolean
+        type: Boolean,
+        required: false,
+        default: true
+        
     }
 })
 
 const task1 = new Task({
-    description: 'Take ted out for a walk',
+    description: 'Go for a run',
     completed: false
 })
 
